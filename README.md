@@ -1,4 +1,4 @@
-# 🐄 DeLaval – Jira & Confluence Keyword Intelligence Workflow
+Jira & Confluence Keyword Intelligence Workflow
 
 > An automated n8n workflow that searches Jira and Confluence for configured keywords, uses **Claude AI** to generate intelligent summaries, and delivers a weekly intelligence report via Confluence page, Jira ticket, and email.
 
@@ -85,18 +85,17 @@ This workflow runs every weekday at **8:00 AM** (or on-demand via webhook) and:
 
 ### 2. 🔗 Manual Webhook Trigger
 - **Type:** `n8n-nodes-base.webhook`
-- **Path:** `POST /delaval-manual-run`
+- **Path:** `POST /dl-manual-run`
 - Allows on-demand triggering from external systems or manual testing
 - Both this and the schedule trigger feed into the same downstream pipeline
 
 ### 3. 🔑 Prepare Keywords
 - **Type:** Code node (JavaScript)
 - Defines the list of strategic keywords to search:
-  - `Managed DDM`
-  - `Yggdrasil`
+  - `project-A`
+  - `Project-B`
   - `Security`
   - `Security Architecture`
-  - `Animal Cell`
 - Calculates a `sinceDate` (7 days ago) to filter only recent results
 - Emits one item per keyword so downstream nodes run **in parallel** for each
 
@@ -212,8 +211,8 @@ Configure these in your n8n instance under **Settings → Variables**:
 | `JIRA_PROJECT_KEY` | Project key for created report tickets | `INTEL` |
 | `CONFLUENCE_REPORT_SPACE_KEY` | Space key where reports are published | `REPORTS` |
 | `CONFLUENCE_PARENT_PAGE_ID` | Page ID to nest reports under | `123456789` |
-| `NOTIFICATION_FROM_EMAIL` | Sender email address | `noreply@delaval.com` |
-| `NOTIFICATION_TO_EMAILS` | Recipient email(s), comma-separated | `team@delaval.com` |
+| `NOTIFICATION_FROM_EMAIL` | Sender email address | `noreply@company.com` |
+| `NOTIFICATION_TO_EMAILS` | Recipient email(s), comma-separated | `team@company.com` |
 
 ---
 
@@ -238,11 +237,10 @@ Keywords are defined in the **🔑 Prepare Keywords** node. To modify them, edit
 
 ```javascript
 const keywords = [
-  "Managed DDM",
-  "Yggdrasil",
+  "Project-A",
+  "Project-B",
   "Security",
   "Security Architecture",
-  "Animal Cell"
 ];
 ```
 
@@ -266,7 +264,7 @@ Each run produces three outputs:
 
 1. **Import the workflow** into your n8n instance:
    - Go to **Workflows → Import from File**
-   - Select `delaval_jira_confluence_workflow.json`
+   - Select `jira_confluence_workflow.json`
 
 2. **Create credentials** for Jira, Confluence, Anthropic, and SMTP as listed above
 
@@ -298,5 +296,5 @@ To receive error notifications, connect the error handler to the email node or c
 
 ---
 
-*Generated workflow tags: `DeLaval`, `Intelligence`, `Jira`, `Confluence`*
-*Instance ID: `delaval-intel-v1`*
+*Generated workflow tags: `n8n`, `Intelligence`, `Jira`, `Confluence`*
+
